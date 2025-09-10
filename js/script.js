@@ -57,6 +57,8 @@ const reservations = [
     },
 ];
 
+// Quando a API estiver liberada, comentar o array rooms atual e criar um novo com o .json() do response da api.
+
 // const url = "https://dummyjson.com/products";
 // async function chamarApi() {
 //   const resp = await fetch(url);
@@ -98,7 +100,7 @@ function preencherFiltros() {
     const recursosSelect = document.querySelector("#recursos");
     const todosRecursos = rooms.flatMap((x) => x.resources);
     const recursos = [...new Set(todosRecursos)];
-    console.log(recursos);
+    // console.log(recursos);
 
     recursos.forEach((item) => {
         const option = document.createElement("option");
@@ -112,7 +114,7 @@ preencherFiltros();
 function criarCards(json) {
     const ul = document.querySelector(".salas-list");
     const listaSalas = json;
-    console.log(listaSalas);
+    // console.log(listaSalas);
 
     listaSalas.forEach((item) => {
         const liGeral = document.createElement("li");
@@ -141,3 +143,41 @@ function criarCards(json) {
     });
 }
 criarCards(rooms);
+
+function filtrarCards() {
+    const formFiltro = document.querySelector(".form-filtro");
+    formFiltro.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const blocoValue = document.querySelector("#bloco").value;
+        const capacidadeValue = Number(
+            document.querySelector("#capacidade").value
+        );
+        const recursosValue = document.querySelector("#recursos").value;
+
+        console.log(blocoValue, capacidadeValue, recursosValue);
+
+        // array com todas as salas que batem com os 3 critérios (filtrin)
+        const salasFiltradas = rooms.filter(
+            (x) =>
+                x.building === blocoValue &&
+                x.capacity <= capacidadeValue &&
+                x.resources.includes(recursosValue)
+        );
+
+        // apaga tudo e cria os cards com base no novo array
+        const ulGeral = document.querySelector(".salas-list");
+        ulGeral.innerHTML = "";
+        criarCards(salasFiltradas);
+    });
+}
+filtrarCards();
+
+// events listener gerais
+
+const mostrarTudoButton = document.querySelector("#mostrarTudo");
+mostrarTudoButton.addEventListener("click", () => {
+    const ulGeral = document.querySelector(".salas-list");
+    ulGeral.innerHTML = "";
+    criarCards(rooms);
+});
