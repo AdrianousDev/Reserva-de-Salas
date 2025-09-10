@@ -1,5 +1,3 @@
-// Dados
-
 const rooms = [
     {
         id: "8CA622CC-280E-4B13-AEB2-33CA8601A74D",
@@ -57,17 +55,17 @@ const reservations = [
     },
 ];
 
-// const url = "https://dummyjson.com/products";
-// async function chamarApi() {
-//   const resp = await fetch(url);
-//   if (resp.status === 200) {
-//     const obj = await resp.json();
-//     adicionarNaLi(obj);
-//   }
-// }
-// chamarApi();
+function filtrarSalas() {
+    const bloco = document.querySelector("#bloco");
+    console.log(bloco.value);
+}
 
-// Functions
+const form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    filtrarSalas();
+});
 
 function preencherFiltros() {
     // Blocos
@@ -95,49 +93,55 @@ function preencherFiltros() {
     });
 
     // Recursos
-    const recursosSelect = document.querySelector("#recursos");
-    const todosRecursos = rooms.flatMap((x) => x.resources);
-    const recursos = [...new Set(todosRecursos)];
-    console.log(recursos);
-
-    recursos.forEach((item) => {
-        const option = document.createElement("option");
-        option.textContent = item;
-        option.value = item;
-        recursosSelect.appendChild(option);
-    });
 }
 preencherFiltros();
 
-function criarCards(json) {
-    const ul = document.querySelector(".salas-list");
-    const listaSalas = json;
-    console.log(listaSalas);
+const tbody = document.querySelector("tbody");
+const apresentarSalas = () => {
+    tbody.innerHTML = "";
 
-    listaSalas.forEach((item) => {
-        const liGeral = document.createElement("li");
-        // liGeral.value = item.id;
-        // console.log(item.id);
+    rooms.forEach((sala, index) => {
+        const tr = document.createElement("tr");
 
-        const ulSobre = document.createElement("ul");
+        const tdLab = document.createElement("td");
+        tdLab.textContent = sala.name;
 
-        const liNomeLab = document.createElement("li");
-        const liBloco = document.createElement("li");
-        const liCapacidade = document.createElement("li");
-        const liRecursos = document.createElement("li");
+        const tdBloco = document.createElement("td");
+        tdBloco.textContent = sala.building;
 
-        liNomeLab.textContent = `${item.name}`;
-        liBloco.textContent = `${item.building}`;
-        liCapacidade.textContent = `${item.capacity}`;
-        liRecursos.textContent = `${item.resources}`;
+        const tdCapacidade = document.createElement("td");
+        tdCapacidade.textContent = sala.capacity;
 
-        ulSobre.appendChild(liNomeLab);
-        ulSobre.appendChild(liBloco);
-        ulSobre.appendChild(liCapacidade);
-        ulSobre.appendChild(liRecursos);
+        const tdRecursos = document.createElement("td");
+        tdRecursos.textContent = sala.resources;
 
-        liGeral.appendChild(ulSobre);
-        ul.appendChild(liGeral);
+        tr.appendChild(tdLab);
+        tr.appendChild(tdBloco);
+        tr.appendChild(tdCapacidade);
+        tr.appendChild(tdRecursos);
+        tbody.appendChild(tr);
+
+        // tdTime.classList.add("d-flex", "align-items-center", "gap-2");
+        // tdTime.appendChild(img);
+
+        // spanName.innerText = time.name;
+        // tdTime.appendChild(spanName);
+
+        // const estatisticas = [
+        //     time.pontos,
+        //     time.partidasJogadas,
+        //     time.vitorias,
+        //     time.empates,
+        //     time.derrotas,
+        //     time.golsMarcados,
+        //     time.golsSofridos,
+        //     time.saldoGols,
+        // ];
+        // estatisticas.forEach((valor) => {
+        //     const td = document.createElement("td");
+        //     td.textContent = valor;
+        //     tr.appendChild(td);
+        // });
     });
-}
-criarCards(rooms);
+};
+apresentarSalas();

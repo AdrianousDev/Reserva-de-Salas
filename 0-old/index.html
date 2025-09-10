@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasileirão Serie A</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css  ">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Reserva de Salas</h1>
+    </header>
+
+    <main class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <!-- Filtro -->
+                        <div class="card-title">
+                            <h2 class="h5 mb-2">Filtro</h2>
+                            <form action="">
+                                <label for="casa" class="me-2">
+                                    <p class="mb-0">Bloco</p>
+                                    <select name="" id="bloco" class="form-select"></select>
+                                </label>
+                                <label for="casaGols" class="me-2">
+                                    <p class="mb-0">Capacidade</p>
+                                    <select name="" id="capacidade" class="form-select"></select>
+                                </label>
+                                <label for="casaGols" class="me-2">
+                                    <p class="mb-0">Recursos</p>
+                                    <select name="" id="recursos" class="form-select"></select>
+                                </label>
+
+                                <div class="mt-2">
+                                    <button id="adicionarPontuacao" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Exibição -->
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Laboratório</th>
+                                        <th>Bloco</th>
+                                        <th>Capacidade</th>
+                                        <th>Rescursos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
