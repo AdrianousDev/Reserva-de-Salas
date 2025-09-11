@@ -1,10 +1,13 @@
 // Urls da API
+
 const urlRooms =
     "https://sistema-de-reservas-node-js-express.onrender.com/api/rooms";
+
 const urlReservations =
     "https://sistema-de-reservas-node-js-express.onrender.com/api/reservations";
 
 // Arrays globais para armazenar dados da API
+// Como são dados que estão sendo usados em muitas functions, foi uma boa opção.
 let rooms = [];
 let reservations = [];
 
@@ -18,8 +21,8 @@ async function chamarApi(url) {
             console.error("Erro ao buscar dados da API");
             return []; // retorna array vazio para não quebrar o resto da aplicação
         }
-    } catch (err) {
-        console.error("Erro na requisição:", err);
+    } catch (erro) {
+        console.error("Erro na requisição:", erro);
         return [];
     }
 }
@@ -60,7 +63,7 @@ function preencherFiltros(rooms) {
 // Cria os cards na lista de salas
 function criarCards(listaSalas, listaReservas) {
     const ul = document.querySelector(".salas-list");
-    ul.innerHTML = ""; // limpa lista antes de adicionar
+    ul.innerHTML = ""; // limpa lista antes de adicionar. Ajuda na redundância de outras functions.
 
     listaSalas.forEach((item) => {
         const liGeral = document.createElement("li");
@@ -148,8 +151,8 @@ function formNovaSala() {
         try {
             const resp = await fetch(urlRooms, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(novaSala),
+                headers: { "Content-Type": "application/json" }, // Especifica o tipo de corpo da requisição (se não tiver pode ser rejeitado)
+                body: JSON.stringify(novaSala), // Transforma o objeto novaSala em uma string JSON.
             });
 
             if (resp.ok) {
@@ -159,8 +162,8 @@ function formNovaSala() {
             } else {
                 console.error("Erro ao criar sala");
             }
-        } catch (err) {
-            console.error("Erro na requisição:", err);
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
         }
     });
 }
