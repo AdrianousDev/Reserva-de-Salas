@@ -1,4 +1,4 @@
-.header-index {
+.header-adicionar {
     background-color: #1e1e1e;
     display: flex;
     flex-wrap: wrap;
@@ -9,17 +9,19 @@
     margin-bottom: 40px;
 }
 
-.header-index h1 {
+.header-adicionar h1 {
     color: #f4f4f4;
     margin: 0px;
 }
 
-.form-filtro {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+.header-adicionar a {
+    padding: 1rem 2rem;
+    color: #f4f4f4;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    text-decoration: none;
 }
 
-.form-filtro label {
-    color: #f4f4f4;
+.header-adicionar a::after {
+    content: "→";
 }

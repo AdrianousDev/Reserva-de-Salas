@@ -1,6 +1,13 @@
 /* Global */
 @import "./global.css";
 
-/* Index.html */
+/* index.html */
 @import "./index/header-index.css";
 @import "./index/cards-index.css";
+@import "./index/link-pages.css";
+
+/* adicionarSalas.html */
+@import "./adicionar/header-adicionar.css";
+
+/* deletarSalas.html */
+@import "./deletar/header-deletar.css";

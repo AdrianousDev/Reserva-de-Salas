@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Salas - Adicionar</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header class="header-adicionar">
+        <h1>Reserva de Salas</h1>
+
+        <a href="../index.html">
+            Voltar para a home
+        </a>
+    </header>
+
+    <section class="container-novaSala">
+        <form id="formNovaSala">
+            <input type="text" placeholder="Nome da sala" id="name" required />
+            <input type="text" placeholder="Bloco" id="building" required />
+            <input type="number" placeholder="Capacidade" id="capacity" required />
+            <input type="text" placeholder="Recursos (separados por vírgula)" id="resources" required />
+            <button type="submit">Adicionar Sala</button>
+        </form>
+    </section>
+
+    <script src="../js/adicionarSalas.js"></script>
+</body>
+
+</html>

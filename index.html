@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fetch Teste</title>
+  <title>Reserva de Salas - Painel</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -34,20 +34,13 @@
     <ul class="salas-list"></ul>
   </main>
 
-  <section class="container-novaSala">
-    <form id="formNovaSala">
-      <input type="text" placeholder="Nome da sala" id="name" required />
-      <input type="text" placeholder="Bloco" id="building" required />
-      <input type="number" placeholder="Capacidade" id="capacity" required />
-      <input type="text" placeholder="Recursos (separados por vírgula)" id="resources" required />
-      <button type="submit">Adicionar Sala</button>
-    </form>
-  </section>
-
-  <section class="container-deletarSala">
-    <form id="formDeletarSala">
-      <select name="id" id="selectDelete"></select>
-    </form>
+  <section class="pages">
+    <div>
+      <a href="./pages/adicionarSalas.html">Adicionar Salas</a>
+    </div>
+    <div>
+      <a href="./pages/deletarSalas.html">Deletar Salas</a>
+    </div>
   </section>
 
   <script src="./js/script.js"></script>
