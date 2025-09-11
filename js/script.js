@@ -59,14 +59,20 @@
 
 // Quando a API estiver liberada, comentar o array rooms atual e criar um novo com o .json() do response da api.
 
-const url =
+// Urls
+const urlRooms =
     "https://sistema-de-reservas-node-js-express.onrender.com/api/rooms";
 
-async function chamarApi() {
+const urlReservations =
+    "https://sistema-de-reservas-node-js-express.onrender.com/api/reservations";
+
+// Functions
+
+async function chamarApi(url) {
     const resp = await fetch(url);
     if (resp.status === 200) {
-        const obj = await resp.json();
-        return obj;
+        const dadosJson = await resp.json();
+        return dadosJson;
     } else {
         console.error("Erro ao buscar dados da API");
         return []; // evita quebrar o resto da aplicação (retornando um array ghost), ficando os cards vazios.
@@ -113,11 +119,20 @@ function preencherFiltros(rooms) {
 }
 
 // cria os cards na lista
-function criarCards(listaSalas) {
+function criarCards(listaSalas, listaReservas) {
     const ul = document.querySelector(".salas-list");
     listaSalas.forEach((item) => {
         const liGeral = document.createElement("li");
-        const ulSobre = document.createElement("ul");
+        liGeral.id = `room-${item.id}`;
+
+        const ocupada = listaReservas.some((res) => res.roomId === item.id);
+        // .some() é tipo um forEach mas para buscas dentro de um array.
+
+        if (ocupada) {
+            liGeral.classList.add("ocupada");
+        } else {
+            liGeral.classList.add("livre");
+        }
 
         const liNomeLab = document.createElement("li");
         const liBloco = document.createElement("li");
@@ -127,9 +142,10 @@ function criarCards(listaSalas) {
         liNomeLab.textContent = `${item.name}`;
         liBloco.textContent = `${item.building}`;
         liCapacidade.textContent = `${item.capacity}`;
-        liRecursos.textContent = `${item.resources.join(", ")}`;
+        liRecursos.textContent = `${item.resources.join(" | ")}`;
         // .join() não atrapalha o filter, pois o filter usa como base os dados da api, e não do html (ou seja, apenas visual).
 
+        const ulSobre = document.createElement("ul");
         ulSobre.appendChild(liNomeLab);
         ulSobre.appendChild(liBloco);
         ulSobre.appendChild(liCapacidade);
@@ -168,12 +184,14 @@ function filtrarCards(rooms) {
 
 // inicializa tudo, esperando os dados corretos da api (não o promise)
 // nela foi englobado tudo o que dependia do array global 'rooms'.
-async function iniciarApi() {
-    const rooms = await chamarApi();
+async function iniciarApiRooms() {
+    const rooms = await chamarApi(urlRooms);
     // console.log(rooms);
+    const reservations = await chamarApi(urlReservations);
+    // console.log(reservations);
 
     preencherFiltros(rooms);
-    criarCards(rooms);
+    criarCards(rooms, reservations);
     filtrarCards(rooms);
 
     // botão 'mostrar tudo'
@@ -184,7 +202,7 @@ async function iniciarApi() {
         criarCards(rooms);
     });
 }
-iniciarApi();
+iniciarApiRooms();
 // iniciar() foi criado pois antes a variável rooms = [] recebia o json que o professor passou (global).
 // mas para conseguir 'puxar' um json, a gente precisa de uma async function, para garantir que esses dados seráo recebidos.
 // e o js por ser interpretado e não compilado, ocorre que o funcionamento não é igual um algoritmo.
