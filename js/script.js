@@ -69,7 +69,7 @@ async function chamarApi() {
         return obj;
     } else {
         console.error("Erro ao buscar dados da API");
-        return [];
+        return []; // evita quebrar o resto da aplicação (retornando um array ghost), ficando os cards vazios.
     }
 }
 
@@ -128,6 +128,7 @@ function criarCards(listaSalas) {
         liBloco.textContent = `${item.building}`;
         liCapacidade.textContent = `${item.capacity}`;
         liRecursos.textContent = `${item.resources.join(", ")}`;
+        // .join() não atrapalha o filter, pois o filter usa como base os dados da api, e não do html (ou seja, apenas visual).
 
         ulSobre.appendChild(liNomeLab);
         ulSobre.appendChild(liBloco);
