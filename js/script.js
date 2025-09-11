@@ -1,91 +1,34 @@
-// Dados
-
-// const rooms = [
-//     {
-//         id: "8CA622CC-280E-4B13-AEB2-33CA8601A74D",
-//         name: "Lab 101",
-//         building: "Bloco A",
-//         capacity: 10,
-//         resources: ["Projetor", "Ar-condicionado", "Quadro branco"],
-//     },
-//     {
-//         id: "0DC06EA4-E832-4B34-84EA-F623F695F0AE",
-//         name: "Lab 102",
-//         building: "Bloco B",
-//         capacity: 20,
-//         resources: ["Projetor", "Ar-condicionado", "Quadro branco"],
-//     },
-//     {
-//         id: "F8784EC6-73CF-4146-BC6B-A28F2EC49588",
-//         name: "Lab 103",
-//         building: "Bloco C",
-//         capacity: 30,
-//         resources: ["Projetor", "Ar-condicionado", "Quadro branco"],
-//     },
-//     {
-//         id: "06D26995-3FA3-4CBC-BB75-43FCFD89A8A1",
-//         name: "Lab 104",
-//         building: "Bloco A",
-//         capacity: 40,
-//         resources: ["Projetor", "Ar-condicionado", "Quadro branco"],
-//     },
-//     {
-//         id: 1,
-//         name: "Lab 110",
-//         building: "Bloco Z",
-//         capacity: 90,
-//         resources: ["Projetor", "Ar-condicionado", "Quadro branco"],
-//     },
-//     {
-//         id: "eaa9d495-f797-4272-aa28-6e24df1f3fd2",
-//         name: "Lab 111",
-//         building: "Bloco Z",
-//         capacity: 90,
-//         resources: ["Projetor", "Ar-condicionado", "Quadro branco"],
-//     },
-// ];
-
-// const reservations = [
-//     {
-//         id: "b99b6d60-4f0c-4f1a-9c0b-1d7a2b0a5c3e",
-//         roomId: "8CA622CC-280E-4B13-AEB2-33CA8601A74D",
-//         title: "Aula de Algoritmos",
-//         start: "2025-09-10T08:00:00.000Z",
-//         end: "2025-09-10T10:00:00.000Z",
-//         requester: "prof.gadelha",
-//         createdAt: "2025-09-09T15:00:00.000Z",
-//     },
-// ];
-
-// Quando a API estiver liberada, comentar o array rooms atual e criar um novo com o .json() do response da api.
-
-// Urls
+// Urls da API
 const urlRooms =
     "https://sistema-de-reservas-node-js-express.onrender.com/api/rooms";
-
 const urlReservations =
     "https://sistema-de-reservas-node-js-express.onrender.com/api/reservations";
 
-// Functions
+// Arrays globais para armazenar dados da API
+let rooms = [];
+let reservations = [];
 
+// Função para buscar dados da API
 async function chamarApi(url) {
-    const resp = await fetch(url);
-    if (resp.status === 200) {
-        const dadosJson = await resp.json();
-        return dadosJson;
-    } else {
-        console.error("Erro ao buscar dados da API");
-        return []; // evita quebrar o resto da aplicação (retornando um array ghost), ficando os cards vazios.
+    try {
+        const resp = await fetch(url);
+        if (resp.status === 200) {
+            return await resp.json();
+        } else {
+            console.error("Erro ao buscar dados da API");
+            return []; // retorna array vazio para não quebrar o resto da aplicação
+        }
+    } catch (err) {
+        console.error("Erro na requisição:", err);
+        return [];
     }
 }
 
-// preenche os selects
+// Preenche os selects do formulário de filtro
 function preencherFiltros(rooms) {
     // Blocos
     const blocoSelect = document.querySelector("#bloco");
-    const todosBlocos = rooms.map((x) => x.building);
-    const blocos = [...new Set(todosBlocos)];
-
+    const blocos = [...new Set(rooms.map((x) => x.building))];
     blocos.forEach((item) => {
         const option = document.createElement("option");
         option.textContent = item;
@@ -95,9 +38,7 @@ function preencherFiltros(rooms) {
 
     // Capacidade
     const capacidadeSelect = document.querySelector("#capacidade");
-    const todasCapacidades = rooms.map((x) => x.capacity);
-    const capacidades = [...new Set(todasCapacidades)];
-
+    const capacidades = [...new Set(rooms.map((x) => x.capacity))];
     capacidades.forEach((item) => {
         const option = document.createElement("option");
         option.textContent = item;
@@ -107,9 +48,7 @@ function preencherFiltros(rooms) {
 
     // Recursos
     const recursosSelect = document.querySelector("#recursos");
-    const todosRecursos = rooms.flatMap((x) => x.resources);
-    const recursos = [...new Set(todosRecursos)];
-
+    const recursos = [...new Set(rooms.flatMap((x) => x.resources))];
     recursos.forEach((item) => {
         const option = document.createElement("option");
         option.textContent = item;
@@ -118,47 +57,42 @@ function preencherFiltros(rooms) {
     });
 }
 
-// cria os cards na lista
+// Cria os cards na lista de salas
 function criarCards(listaSalas, listaReservas) {
     const ul = document.querySelector(".salas-list");
+    ul.innerHTML = ""; // limpa lista antes de adicionar
+
     listaSalas.forEach((item) => {
         const liGeral = document.createElement("li");
         liGeral.id = `room-${item.id}`;
 
-        const ocupada = listaReservas.some((res) => res.roomId === item.id);
-        // .some() é tipo um forEach mas para buscas dentro de um array.
+        // Verifica se a sala está ocupada
+        const ocupada =
+            listaReservas?.some((res) => res.roomId === item.id) ?? false;
+        liGeral.classList.add(ocupada ? "ocupada" : "livre");
 
-        if (ocupada) {
-            liGeral.classList.add("ocupada");
-        } else {
-            liGeral.classList.add("livre");
-        }
-
+        // Cria elementos para exibir informações da sala
         const liNomeLab = document.createElement("li");
         const liBloco = document.createElement("li");
         const liCapacidade = document.createElement("li");
         const liRecursos = document.createElement("li");
 
-        liNomeLab.textContent = `${item.name}`;
-        liBloco.textContent = `${item.building}`;
-        liCapacidade.textContent = `${item.capacity}`;
-        liRecursos.textContent = `${item.resources.join(" | ")}`;
-        // .join() não atrapalha o filter, pois o filter usa como base os dados da api, e não do html (ou seja, apenas visual).
+        liNomeLab.textContent = item.name;
+        liBloco.textContent = item.building;
+        liCapacidade.textContent = item.capacity;
+        liRecursos.textContent = item.resources.join(" | "); // apenas visual
 
         const ulSobre = document.createElement("ul");
-        ulSobre.appendChild(liNomeLab);
-        ulSobre.appendChild(liBloco);
-        ulSobre.appendChild(liCapacidade);
-        ulSobre.appendChild(liRecursos);
+        ulSobre.append(liNomeLab, liBloco, liCapacidade, liRecursos);
 
         liGeral.appendChild(ulSobre);
         ul.appendChild(liGeral);
     });
 }
 
-// filtra cards conforme formulário
-function filtrarCards(rooms) {
-    const formFiltro = document.querySelector(".form-filtro");
+// Filtra cards conforme formulário
+function filtrarCards(rooms, reservations) {
+    const formFiltro = document.querySelector("#form-filtro");
     formFiltro.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -175,34 +109,59 @@ function filtrarCards(rooms) {
                 x.resources.includes(recursosValue)
         );
 
-        // apaga tudo e cria os cards com base no novo array dado pelo filter
-        const ulGeral = document.querySelector(".salas-list");
-        ulGeral.innerHTML = "";
-        criarCards(salasFiltradas);
+        criarCards(salasFiltradas, reservations); // redesenha cards filtrados
     });
 }
 
-// inicializa tudo, esperando os dados corretos da api (não o promise)
-// nela foi englobado tudo o que dependia do array global 'rooms'.
+// Inicializa a aplicação
 async function iniciarApiRooms() {
-    const rooms = await chamarApi(urlRooms);
-    // console.log(rooms);
-    const reservations = await chamarApi(urlReservations);
-    // console.log(reservations);
+    rooms = await chamarApi(urlRooms);
+    reservations = await chamarApi(urlReservations);
 
     preencherFiltros(rooms);
     criarCards(rooms, reservations);
-    filtrarCards(rooms);
+    filtrarCards(rooms, reservations);
 
-    // botão 'mostrar tudo'
+    // Botão "mostrar tudo"
     const mostrarTudoButton = document.querySelector("#mostrarTudo");
     mostrarTudoButton.addEventListener("click", () => {
-        const ulGeral = document.querySelector(".salas-list");
-        ulGeral.innerHTML = "";
-        criarCards(rooms);
+        criarCards(rooms, reservations);
     });
 }
 iniciarApiRooms();
-// iniciar() foi criado pois antes a variável rooms = [] recebia o json que o professor passou (global).
-// mas para conseguir 'puxar' um json, a gente precisa de uma async function, para garantir que esses dados seráo recebidos.
-// e o js por ser interpretado e não compilado, ocorre que o funcionamento não é igual um algoritmo.
+
+// Formulário para criar nova sala
+function formNovaSala() {
+    const form = document.querySelector("#formNovaSala");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const novaSala = {
+            name: form.name.value,
+            building: form.building.value,
+            capacity: Number(form.capacity.value),
+            resources: form.resources.value.split(",").map((r) => r.trim()),
+            // split(",") divide a string em um array, usando a vírgula como separador.
+            // .map((r) => r.trim()) mapeia cada item do array e remove espaços do início e do fim.
+        };
+
+        try {
+            const resp = await fetch(urlRooms, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(novaSala),
+            });
+
+            if (resp.ok) {
+                const dados = await resp.json();
+                rooms.push(dados); // atualiza array local
+                criarCards(rooms, reservations); // redesenha cards
+            } else {
+                console.error("Erro ao criar sala");
+            }
+        } catch (err) {
+            console.error("Erro na requisição:", err);
+        }
+    });
+}
+formNovaSala();

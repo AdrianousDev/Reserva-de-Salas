@@ -12,7 +12,7 @@
   <header class="header-index">
     <h1>Reserva de Salas</h1>
 
-    <form action="" class="form-filtro">
+    <form action="" class="form-filtro" id="form-filtro">
       <label>
         Bloco
         <select name="" id="bloco"></select>
@@ -33,6 +33,16 @@
   <main class="container-cards">
     <ul class="salas-list"></ul>
   </main>
+
+  <section class="container-novaSala">
+    <form id="formNovaSala">
+      <input type="text" placeholder="Nome da sala" id="name" required />
+      <input type="text" placeholder="Bloco" id="building" required />
+      <input type="number" placeholder="Capacidade" id="capacity" required />
+      <input type="text" placeholder="Recursos (separados por vírgula)" id="resources" required />
+      <button type="submit">Adicionar Sala</button>
+    </form>
+  </section>
 
   <script src="./js/script.js"></script>
 </body>
