@@ -31,6 +31,7 @@ async function chamarApi(url) {
 function preencherFiltros(rooms) {
     // Blocos
     const blocoSelect = document.querySelector("#bloco");
+    blocoSelect.innerHTML = `<option value="">Todos</option>`; // opção vazia
     const blocos = [...new Set(rooms.map((x) => x.building))];
     blocos.forEach((item) => {
         const option = document.createElement("option");
@@ -41,6 +42,7 @@ function preencherFiltros(rooms) {
 
     // Capacidade
     const capacidadeSelect = document.querySelector("#capacidade");
+    capacidadeSelect.innerHTML = `<option value="">Todas</option>`; // opção vazia
     const capacidades = [...new Set(rooms.map((x) => x.capacity))];
     capacidades.forEach((item) => {
         const option = document.createElement("option");
@@ -51,6 +53,7 @@ function preencherFiltros(rooms) {
 
     // Recursos
     const recursosSelect = document.querySelector("#recursos");
+    recursosSelect.innerHTML = `<option value="">Todos</option>`; // opção vazia
     const recursos = [...new Set(rooms.flatMap((x) => x.resources))];
     recursos.forEach((item) => {
         const option = document.createElement("option");
@@ -100,19 +103,39 @@ function filtrarCards(rooms, reservations) {
         e.preventDefault();
 
         const blocoValue = document.querySelector("#bloco").value;
-        const capacidadeValue = Number(
-            document.querySelector("#capacidade").value
-        );
+        const capacidadeValue = document.querySelector("#capacidade").value;
         const recursosValue = document.querySelector("#recursos").value;
 
-        const salasFiltradas = rooms.filter(
-            (x) =>
-                x.building === blocoValue &&
-                x.capacity <= capacidadeValue &&
-                x.resources.includes(recursosValue)
-        );
+        const salasFiltradas = rooms.filter((sala) => {
+            // começa assumindo que a sala serve
+            let salaValida = true;
 
-        criarCards(salasFiltradas, reservations); // redesenha cards filtrados
+            // só verifica o bloco se o usuário escolheu algo
+            if (blocoValue !== "") {
+                if (sala.building !== blocoValue) {
+                    salaValida = false;
+                }
+            }
+
+            // capacidade: só aplica se foi selecionada
+            if (capacidadeValue !== "") {
+                const capSelecionada = Number(capacidadeValue);
+                if (sala.capacity !== capSelecionada) {
+                    salaValida = false;
+                }
+            }            
+
+            // recursos: só aplica se foi selecionado
+            if (recursosValue !== "") {
+                if (!sala.resources.includes(recursosValue)) {
+                    salaValida = false;
+                }
+            }
+
+            return salaValida;
+        });
+
+        criarCards(salasFiltradas, reservations);
     });
 }
 
