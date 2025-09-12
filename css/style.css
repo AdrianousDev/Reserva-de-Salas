@@ -6,6 +6,7 @@
 @import "./index/cards-index.css";
 @import "./index/link-pages.css";
 @import "./index/add-reservations.css";
+@import "./index/delete-reservations.css";
 
 /* adicionarSalas.html */
 @import "./adicionar/header-adicionar.css";

@@ -226,6 +226,20 @@ function deletarReserva(rooms, reservations) {
     });
 }
 
+// Mostrar e criar lista de reservas
+function mostrarReservas(rooms, reservations) {
+    const ulReservations = document.querySelector("#ulReservations");
+    reservations.forEach((item) => {
+        const liGeral = document.createElement("li");
+
+        const reservaRooms = rooms.find((r) => r.id === item.roomId);
+        // find -> encontrar/buscar/preocurar
+
+        liGeral.textContent = `${item.title} | ${reservaRooms.name} | ${reservaRooms.building} | ${item.requester} | ${item.start} á ${item.end}`;
+        ulReservations.appendChild(liGeral);
+    });
+}
+
 // Inicializa a aplicação
 async function iniciarApiRooms() {
     rooms = await chamarDadosApi(urlRooms);
@@ -237,6 +251,7 @@ async function iniciarApiRooms() {
     filtrarCards(rooms, reservations);
     adicionarReserva(rooms);
     deletarReserva(rooms, reservations);
+    mostrarReservas(rooms, reservations);
 
     // Botão "mostrar tudo"
     const mostrarTudoButton = document.querySelector("#mostrarTudo");
