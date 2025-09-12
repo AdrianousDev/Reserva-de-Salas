@@ -1,3 +1,7 @@
+// Urls da API
+const urlRooms =
+    "https://sistema-de-reservas-node-js-express.onrender.com/api/rooms";
+
 // Formulário para criar nova sala
 function formNovaSala() {
     const form = document.querySelector("#formNovaSala");
@@ -9,7 +13,7 @@ function formNovaSala() {
             building: form.building.value,
             capacity: Number(form.capacity.value),
             resources: form.resources.value.split(",").map((r) => r.trim()),
-            // split(",") divide a string em um array, usando a vírgula como separador.
+            // split(",") divide a string em um array, usando a vírgula como separador (ref de quebra).
             // .map((r) => r.trim()) mapeia cada item do array e remove espaços do início e do fim.
         };
 
@@ -21,15 +25,13 @@ function formNovaSala() {
             });
 
             if (resp.ok) {
-                const dados = await resp.json();
-                rooms.push(dados); // atualiza array local
-                criarCards(rooms, reservations); // redesenha cards
+                alert("Sala adicionada!");
             } else {
-                console.error("Erro ao criar sala");
+                console.error("Erro");
             }
         } catch (erro) {
             console.error("Erro na requisição:", erro);
         }
     });
 }
-// formNovaSala();
+formNovaSala();

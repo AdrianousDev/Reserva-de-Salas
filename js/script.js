@@ -7,12 +7,12 @@ const urlReservations =
     "https://sistema-de-reservas-node-js-express.onrender.com/api/reservations";
 
 // Arrays globais para armazenar dados da API
-// Como são dados que estão sendo usados em muitas functions, foi uma boa opção.
+// Como são dados que estão sendo usados em muitas functions, foi uma boa opção mas parece meio perigoso.
 let rooms = [];
 let reservations = [];
 
 // Função para buscar dados da API
-async function chamarApi(url) {
+async function chamarDadosApi(url) {
     try {
         const resp = await fetch(url);
         if (resp.status === 200) {
@@ -141,8 +141,8 @@ function filtrarCards(rooms, reservations) {
 
 // Inicializa a aplicação
 async function iniciarApiRooms() {
-    rooms = await chamarApi(urlRooms);
-    reservations = await chamarApi(urlReservations);
+    rooms = await chamarDadosApi(urlRooms);
+    reservations = await chamarDadosApi(urlReservations);
 
     preencherFiltros(rooms);
     criarCards(rooms, reservations);
