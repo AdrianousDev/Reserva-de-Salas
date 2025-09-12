@@ -229,13 +229,39 @@ function deletarReserva(rooms, reservations) {
 // Mostrar e criar lista de reservas
 function mostrarReservas(rooms, reservations) {
     const ulReservations = document.querySelector("#ulReservations");
+    ulReservations.innerHTML = "";
+
     reservations.forEach((item) => {
         const liGeral = document.createElement("li");
 
         const reservaRooms = rooms.find((r) => r.id === item.roomId);
-        // find -> encontrar/buscar/preocurar
+        // console.log(reservaRooms);
 
-        liGeral.textContent = `${item.title} | ${reservaRooms.name} | ${reservaRooms.building} | ${item.requester} | ${item.start} á ${item.end}`;
+        // Solução do CHATGPT para deixar a data mais amigável (extrair do formato ISO).
+        const startDate = new Date(item.start);
+        const endDate = new Date(item.end);
+
+        const formatarData = (date) => {
+            const dia = String(date.getDate()).padStart(2, "0");
+            const mes = String(date.getMonth() + 1).padStart(2, "0");
+            const ano = date.getFullYear();
+            const hora = String(date.getHours()).padStart(2, "0");
+            const minuto = String(date.getMinutes()).padStart(2, "0");
+            return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
+        };
+
+        if (reservaRooms) {
+            liGeral.textContent = `${item.title} | ${reservaRooms.name} | ${
+                reservaRooms.building
+            } | ${item.requester} | ${formatarData(startDate)} á ${formatarData(
+                endDate
+            )}`;
+        } else {
+            liGeral.textContent = `${item.title} | Sala não encontrada | ${
+                item.requester
+            } | ${formatarData(startDate)} á ${formatarData(endDate)}`;
+        }
+
         ulReservations.appendChild(liGeral);
     });
 }
