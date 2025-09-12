@@ -123,7 +123,7 @@ function filtrarCards(rooms, reservations) {
                 if (sala.capacity !== capSelecionada) {
                     salaValida = false;
                 }
-            }            
+            }
 
             // recursos: só aplica se foi selecionado
             if (recursosValue !== "") {
