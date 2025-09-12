@@ -43,6 +43,43 @@
     </div>
   </section>
 
+  <section class="AddReservations">
+    <form id="formAddReservations">
+      <label>
+        Sala:
+        <select id="selectRoomId"></select>
+      </label>
+      <label>
+        Tittle:
+        <input type="text" id="title">
+      </label>
+      <label>
+        Start:
+        <input type="datetime-local" id="start">
+      </label>
+      <label>
+        end:
+        <input type="datetime-local" id="end">
+      </label>
+      <label>
+        Requester:
+        <input type="text" id="requester">
+      </label>
+      <button type="submit">Reservar</button>
+    </form>
+  </section>
+
+  <section class="DeleteReservations">
+    <form id="formDeleteReservations">
+      <label>
+        Deletar Reserva:
+        <select id="selectRoomIdDelete"></select>
+      </label>
+
+      <button type="submit">Deletar</button>
+    </form>
+  </section>
+
   <script src="./js/script.js"></script>
 </body>
 

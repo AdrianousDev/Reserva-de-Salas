@@ -139,14 +139,104 @@ function filtrarCards(rooms, reservations) {
     });
 }
 
+// Adicionar Event no form de ADICIONAR Reserva e chamar function
+function adicionarReserva(rooms) {
+    // Add Rooms no select
+    const roomsSelect = document.querySelector("#selectRoomId");
+    rooms.forEach((item) => {
+        const option = document.createElement("option");
+        option.textContent = `${item.name} - ${item.building}`;
+        option.value = item.id;
+        roomsSelect.appendChild(option);
+    });
+
+    const form = document.querySelector("#formAddReservations");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const novaReserva = {
+            roomId: form.selectRoomId.value,
+            title: form.title.value,
+            start: new Date(form.start.value).toISOString(),
+            end: new Date(form.end.value).toISOString(),
+            requester: form.requester.value,
+        };
+
+        console.log(novaReserva);
+
+        try {
+            const resp = await fetch(urlReservations, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }, // Especifica o tipo de corpo da requisição (se não tiver pode ser rejeitado)
+                body: JSON.stringify(novaReserva), // Transforma o objeto novaReserva em uma string JSON.
+            });
+
+            if (resp.ok) {
+                alert("Reserva adicionada!");
+                window.location.reload();
+            } else {
+                console.error("Erro no resp.ok");
+            }
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+    });
+}
+
+// Adicionar Event no form de DELETAR Reserva e chamar function
+function deletarReserva(rooms, reservations) {
+    // Add Rooms no select
+    const roomsSelect = document.querySelector("#selectRoomIdDelete");
+    rooms.forEach((item) => {
+        const option = document.createElement("option");
+        option.textContent = `${item.name} - ${item.building}`;
+        option.value = item.id;
+        roomsSelect.appendChild(option);
+    });
+
+    const form = document.querySelector("#formDeleteReservations");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const roomId = form.selectRoomIdDelete.value;
+        const reserva = reservations.find((r) => r.roomId == roomId);
+        // find -> encontrar/buscar/preocurar
+
+        if (!reserva) {
+            alert("Nenhuma reserva encontrada para esta sala!");
+            return;
+        }
+
+        const reservaId = reserva.id;
+
+        try {
+            const resp = await fetch(`${urlReservations}/${reservaId}`, {
+                method: "DELETE",
+            });
+
+            if (resp.ok) {
+                alert("Reserva retirada com sucesso!");
+                window.location.reload();
+            } else {
+                console.error("Erro ao deletar reserva");
+            }
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+    });
+}
+
 // Inicializa a aplicação
 async function iniciarApiRooms() {
     rooms = await chamarDadosApi(urlRooms);
     reservations = await chamarDadosApi(urlReservations);
+    // garante que os arrays vão ter os dados da api, ou apenas nada.
 
     preencherFiltros(rooms);
     criarCards(rooms, reservations);
     filtrarCards(rooms, reservations);
+    adicionarReserva(rooms);
+    deletarReserva(rooms, reservations);
 
     // Botão "mostrar tudo"
     const mostrarTudoButton = document.querySelector("#mostrarTudo");
