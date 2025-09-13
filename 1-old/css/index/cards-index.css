@@ -1,0 +1,34 @@
+.container-cards {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    transition: 0.5s;
+    margin-bottom: 120px;
+}
+
+.salas-list {
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0px auto;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+.salas-list > li {
+    background: #f4f4f4;
+    padding: 12px;
+    width: 200px;
+    border-radius: 8px;
+}
+
+.salas-list > li:hover {
+    background: #e0e0e0;
+    cursor: pointer;
+}
+
+.salas-list > li > ul {
+    display: grid;
+    gap: 8px;
+}

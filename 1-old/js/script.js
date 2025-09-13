@@ -66,7 +66,7 @@ function preencherFiltros(rooms) {
 // Cria os cards na lista de salas
 function criarCards(listaSalas, listaReservas) {
     const ul = document.querySelector(".salas-list");
-    ul.innerHTML = "";
+    ul.innerHTML = ""; // limpa lista antes de adicionar. Ajuda na redundância de outras functions.
 
     listaSalas.forEach((item) => {
         const liGeral = document.createElement("li");
@@ -75,9 +75,6 @@ function criarCards(listaSalas, listaReservas) {
         // Verifica se a sala está ocupada
         const ocupada =
             listaReservas?.some((res) => res.roomId === item.id) ?? false;
-        // verifica se pelo menos um item do array satifaz a condição
-        // ?. -> só entra se existir
-
         liGeral.classList.add(ocupada ? "ocupada" : "livre");
 
         // Cria elementos para exibir informações da sala
@@ -114,25 +111,22 @@ function filtrarCards(rooms, reservations) {
             let salaValida = true;
 
             // só verifica o bloco se o usuário escolheu algo
-            if (blocoValue) {
+            if (blocoValue !== "") {
                 if (sala.building !== blocoValue) {
                     salaValida = false;
                 }
             }
 
             // capacidade: só aplica se foi selecionada
-            if (capacidadeValue) {
+            if (capacidadeValue !== "") {
                 const capSelecionada = Number(capacidadeValue);
-                if (
-                    sala.capacity !== capSelecionada &&
-                    sala.capacity <= capSelecionada
-                ) {
+                if (sala.capacity !== capSelecionada) {
                     salaValida = false;
                 }
             }
 
             // recursos: só aplica se foi selecionado
-            if (recursosValue) {
+            if (recursosValue !== "") {
                 if (!sala.resources.includes(recursosValue)) {
                     salaValida = false;
                 }
@@ -190,23 +184,46 @@ function adicionarReserva(rooms) {
 }
 
 // Adicionar Event no form de DELETAR Reserva e chamar function
-async function deletarReserva(id) {
-    const reservaId = id;
+function deletarReserva(rooms, reservations) {
+    // Add Rooms no select
+    const roomsSelect = document.querySelector("#selectRoomIdDelete");
+    rooms.forEach((item) => {
+        const option = document.createElement("option");
+        option.textContent = `${item.name} - ${item.building}`;
+        option.value = item.id;
+        roomsSelect.appendChild(option);
+    });
 
-    try {
-        const resp = await fetch(`${urlReservations}/${reservaId}`, {
-            method: "DELETE",
-        });
+    const form = document.querySelector("#formDeleteReservations");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-        if (resp.ok) {
-            alert("Reserva retirada com sucesso!");
-            window.location.reload();
-        } else {
-            console.error("Erro ao deletar reserva");
+        const roomId = form.selectRoomIdDelete.value;
+        const reserva = reservations.find((r) => r.roomId == roomId);
+        // find -> encontrar/buscar/preocurar
+
+        if (!reserva) {
+            alert("Nenhuma reserva encontrada para esta sala!");
+            return;
         }
-    } catch (erro) {
-        console.error("Erro na requisição:", erro);
-    }
+
+        const reservaId = reserva.id;
+
+        try {
+            const resp = await fetch(`${urlReservations}/${reservaId}`, {
+                method: "DELETE",
+            });
+
+            if (resp.ok) {
+                alert("Reserva retirada com sucesso!");
+                window.location.reload();
+            } else {
+                console.error("Erro ao deletar reserva");
+            }
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+        }
+    });
 }
 
 // Mostrar e criar lista de reservas
@@ -215,12 +232,6 @@ function mostrarReservas(rooms, reservations) {
     ulReservations.innerHTML = "";
 
     reservations.forEach((item) => {
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.textContent = "X";
-        deleteButton.classList.add("deleteButton");
-        deleteButton.value = item.id;
-
         const liGeral = document.createElement("li");
 
         const reservaRooms = rooms.find((r) => r.id === item.roomId);
@@ -252,14 +263,6 @@ function mostrarReservas(rooms, reservations) {
         }
 
         ulReservations.appendChild(liGeral);
-        liGeral.appendChild(deleteButton);
-    });
-
-    const todosDeleteButton = document.querySelectorAll(".deleteButton");
-    todosDeleteButton.forEach((item) => {
-        item.addEventListener("click", () => {
-            deletarReserva(item.value);
-        });
     });
 }
 
@@ -273,15 +276,12 @@ async function iniciarApiRooms() {
     criarCards(rooms, reservations);
     filtrarCards(rooms, reservations);
     adicionarReserva(rooms);
+    deletarReserva(rooms, reservations);
     mostrarReservas(rooms, reservations);
 
     // Botão "mostrar tudo"
     const mostrarTudoButton = document.querySelector("#mostrarTudo");
     mostrarTudoButton.addEventListener("click", () => {
-        const blocoValue = (document.querySelector("#bloco").value = "");
-        const capacidadeValue = (document.querySelector("#capacidade").value =
-            "");
-        const recursosValue = (document.querySelector("#recursos").value = "");
         criarCards(rooms, reservations);
     });
 }

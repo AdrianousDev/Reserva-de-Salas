@@ -1,17 +1,21 @@
 .pages {
     display: flex;
     gap: 40px;
-    align-items: center;
     justify-content: center;
-}
-
-.pages div {
-    margin-bottom: 80px;
+    align-items: center;
 }
 
 .pages a {
     display: block;
-    background-color: #ccc;
+    background-color: #2a2a2a;
+    color: #9f9f9f;
     border-radius: 4px;
     padding: 2rem 4rem;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.pages a:hover {
+    background-color: #fff;
+    transition: 0.5s;
 }

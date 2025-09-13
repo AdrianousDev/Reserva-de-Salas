@@ -2,11 +2,76 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 0px;
     margin: 0px;
+    background-color: #1e1e1e;
+    color: #fff;
 }
 
 ul {
     padding: 0px;
     list-style: none;
+}
+
+/* Seções principais */
+section {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Títulos das seções */
+section h2 {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+/* Labels e formulários */
+form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+form label select,
+form input {
+    padding: 8px 10px;
+    margin-top: 5px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+/* Botões */
+button {
+    background-color: #3a3a3a;
+    color: #ffffff;
+    border: 1px solid #555;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Lista de reservas */
+#ulReservations {
+    list-style: none;
+}
+
+#ulReservations li {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 li.ocupada {
@@ -17,4 +82,9 @@ li.ocupada {
 li.livre {
     background-color: #d4edda !important;
     border: 4px solid #090 !important;
+}
+
+.deleteButton {
+    background-color: red !important;
+    margin-left: 10px;
 }

@@ -1,0 +1,27 @@
+.header-adicionar {
+    background-color: #1e1e1e;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    margin-bottom: 40px;
+}
+
+.header-adicionar h1 {
+    color: #f4f4f4;
+    margin: 0px;
+}
+
+.header-adicionar a {
+    padding: 1rem 2rem;
+    color: #f4f4f4;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.header-adicionar a::after {
+    content: "→";
+}

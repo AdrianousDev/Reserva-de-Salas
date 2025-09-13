@@ -1,0 +1,17 @@
+.pages {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.pages div {
+    margin-bottom: 80px;
+}
+
+.pages a {
+    display: block;
+    background-color: #ccc;
+    border-radius: 4px;
+    padding: 2rem 4rem;
+}
