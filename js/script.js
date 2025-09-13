@@ -278,10 +278,12 @@ async function iniciarApiRooms() {
     // Botão "mostrar tudo"
     const mostrarTudoButton = document.querySelector("#mostrarTudo");
     mostrarTudoButton.addEventListener("click", () => {
-        const blocoValue = (document.querySelector("#bloco").value = "");
-        const capacidadeValue = (document.querySelector("#capacidade").value =
-            "");
-        const recursosValue = (document.querySelector("#recursos").value = "");
+        const blocoValue = document.querySelector("#bloco");
+        blocoValue.value = "";
+        const capacidadeValue = document.querySelector("#capacidade");
+        capacidadeValue.value = "";
+        const recursosValue = document.querySelector("#recursos");
+        recursosValue.value = "";
         criarCards(rooms, reservations);
     });
 }
