@@ -32,7 +32,7 @@ function preencherFiltros(rooms) {
     // Blocos
     const blocoSelect = document.querySelector("#bloco");
     blocoSelect.innerHTML = `<option value="">Todos</option>`; // opção vazia
-    const blocos = [...new Set(rooms.map((x) => x.building))];
+    const blocos = [...new Set(rooms.map((x) => x.building))].sort();
     blocos.forEach((item) => {
         const option = document.createElement("option");
         option.textContent = item;
@@ -43,7 +43,7 @@ function preencherFiltros(rooms) {
     // Capacidade
     const capacidadeSelect = document.querySelector("#capacidade");
     capacidadeSelect.innerHTML = `<option value="">Todas</option>`; // opção vazia
-    const capacidades = [...new Set(rooms.map((x) => x.capacity))];
+    const capacidades = [...new Set(rooms.map((x) => x.capacity))].sort();
     capacidades.forEach((item) => {
         const option = document.createElement("option");
         option.textContent = item;
@@ -54,7 +54,7 @@ function preencherFiltros(rooms) {
     // Recursos
     const recursosSelect = document.querySelector("#recursos");
     recursosSelect.innerHTML = `<option value="">Todos</option>`; // opção vazia
-    const recursos = [...new Set(rooms.flatMap((x) => x.resources))];
+    const recursos = [...new Set(rooms.flatMap((x) => x.resources))].sort();
     recursos.forEach((item) => {
         const option = document.createElement("option");
         option.textContent = item;

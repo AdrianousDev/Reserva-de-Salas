@@ -26,7 +26,7 @@ function preencherOpcoes(rooms) {
     salas.forEach((item) => {
         const option = document.createElement("option");
         option.value = `${item.id}`;
-        option.textContent = item.name;
+        option.textContent = `${item.name} - ${item.building}`;
         select.appendChild(option);
     });
 }
